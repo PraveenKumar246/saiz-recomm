@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SAIZ Size Recommendation Widget - Find your perfect size" />
+    <title>SAIZ Recomm Widget</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- SAIZ Widget Container with data attributes -->
+    <div id="demo-page" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0a0a14; padding: 40px;">
+      <h1 style="font-family: Inter, sans-serif; color: #fff; margin-bottom: 8px; font-size: 28px; letter-spacing: -0.5px;">
+        Product Page Demo
+      </h1>
+      <p style="font-family: Inter, sans-serif; color: #888; margin-bottom: 32px; font-size: 15px;">
+        Zahara Lace Longsleeve Black — OH APRIL
+      </p>
+
+      <div
+        id="saiz-widget-container"
+        data-brandcode="ohapril"
+        data-productcode="zahara-lace-longsleeve-black"
+        data-visitorid="localhost"
+        data-language="en-us"
+      >
+        <!-- Widget renders here -->
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
