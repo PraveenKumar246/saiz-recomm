@@ -5,6 +5,12 @@ import avatar from '../../assets/avatar.svg';
 interface AvatarProps {
   gender: 'male' | 'female' | 'other';
   garmentType: string;
+  displayConfig?: {
+    chest: boolean;
+    waist: boolean;
+    hip: boolean;
+    length: boolean;
+  };
   fitResults?: Array<{
     bodyPart: string;
     label: 'too tight' | 'fits right' | 'too loose';
@@ -12,7 +18,12 @@ interface AvatarProps {
   }>;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ gender, garmentType, fitResults = [] }) => {
+const Avatar: React.FC<AvatarProps> = ({ 
+  gender, 
+  garmentType, 
+  displayConfig = { chest: true, waist: true, hip: true, length: false },
+  fitResults = [] 
+}) => {
   const { colors, mode } = useTheme();
 
   const getFitColor = (label: string) => {
@@ -26,61 +37,30 @@ const Avatar: React.FC<AvatarProps> = ({ gender, garmentType, fitResults = [] })
 
   return (
     <div className="avatar" id="avatar-display">
-      <div className="avatar__body" style={{ background: mode === 'dark' ? '#111111' : '#F5F5F5' }}>
+      <div className="avatar__body" style={{ background: mode === 'dark' ? '#111111' : '#F8F8F8' }}>
         {/* SVG Body Silhouette */}
-        <svg viewBox="0 0 200 400" className="avatar__svg" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 100 200" className="avatar__svg" xmlns="http://www.w3.org/2000/svg">
+          {/* Helper Lines (Anatomical Markers) - Behind the silhouette */}
+          {displayConfig.chest && <line x1="20" y1="58" x2="80" y2="58" stroke={mode === 'dark' ? '#333' : '#E0E0E0'} strokeWidth="0.8" strokeDasharray="3,2" />}
+          {displayConfig.waist && <line x1="25" y1="88" x2="75" y2="88" stroke={mode === 'dark' ? '#333' : '#E0E0E0'} strokeWidth="0.8" strokeDasharray="3,2" />}
+          {displayConfig.hip && <line x1="22" y1="108" x2="78" y2="108" stroke={mode === 'dark' ? '#333' : '#E0E0E0'} strokeWidth="0.8" strokeDasharray="3,2" />}
+
           {gender === 'female' ? (
-            // Female Silhouette
-            <g fill={mode === 'dark' ? '#333333' : '#DDDDDD'} stroke={mode === 'dark' ? '#444444' : '#CCCCCC'} strokeWidth="1">
-              {/* Head */}
-              <ellipse cx="100" cy="40" rx="22" ry="26" />
-              {/* Neck */}
-              <rect x="92" y="64" width="16" height="16" rx="4" />
-              {/* Torso */}
-              <path d="M70 80 Q60 100 58 140 Q56 180 65 200 L80 200 Q85 185 100 185 Q115 185 120 200 L135 200 Q144 180 142 140 Q140 100 130 80 Z" />
-              {/* Left Arm */}
-              <path d="M70 80 Q50 90 42 130 Q38 150 40 170 Q42 175 48 172 Q52 150 56 130 Q58 120 65 100 Z" />
-              {/* Right Arm */}
-              <path d="M130 80 Q150 90 158 130 Q162 150 160 170 Q158 175 152 172 Q148 150 144 130 Q142 120 135 100 Z" />
-              {/* Left Leg */}
-              <path d="M65 200 Q60 250 58 300 Q56 340 58 380 L78 380 Q80 340 82 300 Q84 260 80 200 Z" />
-              {/* Right Leg */}
-              <path d="M120 200 Q124 260 118 300 Q122 340 122 380 L142 380 Q142 340 144 300 Q140 250 135 200 Z" />
-              {/* Garment overlay for shirt */}
-              {garmentType.toLowerCase() === 'shirt' && (
-                <path
-                  d="M70 80 Q60 100 58 140 Q56 170 62 195 L138 195 Q144 170 142 140 Q140 100 130 80 L120 82 Q115 90 100 90 Q85 90 80 82 Z"
-                  fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
-                  stroke={colors.accent}
-                  strokeWidth="1.5"
-                  strokeDasharray="4 2"
-                />
-              )}
-            </g>
+            <path 
+              d="M50 20 C42 20 38 28 38 35 C38 45 42 48 50 48 C58 48 62 45 62 35 C62 28 58 20 50 20 M48 48 L46 55 L35 58 C30 60 28 75 30 95 L32 95 C33 78 35 72 40 70 L44 105 L35 110 L30 180 L48 180 L50 120 L52 180 L70 180 L65 110 L56 105 L60 70 C65 72 67 78 68 95 L70 95 C72 75 70 60 65 58 L54 55 L52 48 Z" 
+              fill={mode === 'dark' ? '#222' : '#E0E0E0'} 
+              stroke={mode === 'dark' ? '#333' : '#D0D0D0'}
+              strokeWidth="0.5"
+            />
           ) : (
-            // Male or Other Silhouette
-            <g fill={mode === 'dark' ? '#333333' : '#DDDDDD'} stroke={mode === 'dark' ? '#444444' : '#CCCCCC'} strokeWidth="1">
-              <ellipse cx="100" cy="38" rx="24" ry="28" />
-              <rect x="90" y="64" width="20" height="18" rx="4" />
-              <path d="M65 82 Q55 105 52 145 Q50 185 60 205 L85 205 Q90 195 100 195 Q110 195 115 205 L140 205 Q150 185 148 145 Q145 105 135 82 Z" />
-              <path d="M65 82 Q42 92 35 135 Q32 155 34 178 Q36 183 42 180 Q46 155 50 135 Q54 118 60 98 Z" />
-              <path d="M135 82 Q158 92 165 135 Q168 155 166 178 Q164 183 158 180 Q154 155 150 135 Q146 118 140 98 Z" />
-              <path d="M60 205 Q55 260 52 310 Q50 350 52 385 L75 385 Q78 350 80 310 Q82 265 85 205 Z" />
-              <path d="M115 205 Q118 265 120 310 Q122 350 125 385 L148 385 Q150 350 148 310 Q145 260 140 205 Z" />
-              {garmentType.toLowerCase() === 'shirt' && (
-                <path
-                  d="M65 82 Q55 105 52 145 Q50 175 57 200 L143 200 Q150 175 148 145 Q145 105 135 82 L125 85 Q118 95 100 95 Q82 95 75 85 Z"
-                  fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
-                  stroke={colors.accent}
-                  strokeWidth="1.5"
-                  strokeDasharray="4 2"
-                />
-              )}
-            </g>
+            <path 
+              d="M50 18 C41 18 36 28 36 38 C36 48 41 52 50 52 C59 52 64 48 64 38 C64 28 59 18 50 18 M48 52 L45 60 L30 65 C25 68 22 85 24 105 L27 105 C28 85 30 78 38 75 L42 110 L32 115 L28 185 L48 185 L50 125 L52 185 L72 185 L68 115 L58 110 L62 75 C70 78 72 85 73 105 L76 105 C78 85 75 68 70 65 L55 60 L52 52 Z" 
+              fill={mode === 'dark' ? '#222' : '#E0E0E0'} 
+              stroke={mode === 'dark' ? '#333' : '#D0D0D0'}
+              strokeWidth="0.5"
+            />
           )}
         </svg>
-
-        <img src={avatar} alt="Avatar" />
 
         {/* Fit Result Labels */}
         {fitResults.map((result, index) => (
@@ -91,16 +71,13 @@ const Avatar: React.FC<AvatarProps> = ({ gender, garmentType, fitResults = [] })
               position: 'absolute',
               top: result.position.top,
               right: result.position.right,
-              background: getFitColor(result.label) + '22',
-              color: getFitColor(result.label),
-              borderColor: getFitColor(result.label),
+              background: '#000000',
+              color: '#FFFFFF',
+              borderColor: '#000000',
             }}
           >
             <span className="avatar__fit-dot" style={{ background: getFitColor(result.label) }} />
-            {result.label}
-            <svg width="20" height="1" style={{ position: 'absolute', left: '-20px', top: '50%' }}>
-              <line x1="0" y1="0" x2="20" y2="0" stroke={getFitColor(result.label)} strokeWidth="1" strokeDasharray="3 2" />
-            </svg>
+            {result.bodyPart}: {result.label}
           </div>
         ))}
       </div>

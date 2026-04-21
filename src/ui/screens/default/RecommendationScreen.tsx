@@ -120,6 +120,7 @@ const RecommendationScreen: React.FC = () => {
           <Avatar
             gender={userMeasurements.gender}
             garmentType={product.garmentType}
+            displayConfig={product.display}
             fitResults={fitResults}
           />
         </div>
@@ -128,8 +129,8 @@ const RecommendationScreen: React.FC = () => {
         <div className="screen__details-section">
           {/* Big Size Box */}
           <div className="recommendation-hero">
-            <div className="recommendation-hero__box" style={{ background: mode === 'dark' ? colors.surfaceAlt : '#F8F8FA', borderColor: colors.border }}>
-              <span className="recommendation-hero__size" style={{ color: colors.text }}>
+            <div className="recommendation-hero__box">
+              <span className="recommendation-hero__size">
                 {recommendedSize.productSize}
               </span>
             </div>

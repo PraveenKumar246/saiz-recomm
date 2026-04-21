@@ -29,14 +29,14 @@ const SizeSelector: React.FC<SizeSelectorProps> = ({
             className={`size-selector__btn ${isSelected ? 'size-selector__btn--selected' : ''} ${isRecommended ? 'size-selector__btn--recommended' : ''}`}
             onClick={() => onSelect(size)}
             style={{
-              background: isSelected ? colors.accent : 'transparent',
-              color: isSelected ? colors.primary : colors.text,
-              borderColor: isRecommended && !isSelected ? colors.accent : colors.border,
+              background: isSelected ? '#000000' : 'transparent',
+              color: isSelected ? '#FFFFFF' : colors.text,
+              borderColor: isSelected ? '#000000' : (isRecommended ? '#000000' : colors.border),
             }}
           >
             <span className="size-selector__label">{size}</span>
             {isRecommended && (
-              <span className="size-selector__badge" style={{ background: '#4CAF50', border: '1px solid white' }}>✓</span>
+              <span className="size-selector__badge" style={{ background: '#4CAF50', border: '1px solid white' }} />
             )}
           </button>
         );
