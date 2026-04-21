@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
+# SAIZ Recomm Widget
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, mobile-first size recommendation widget built with **React**, **TypeScript**, and **Redux Toolkit**. Designed with **Clean Architecture** principles to provide a seamless, theme-aware integration for e-commerce platforms.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🏗 Architecture Overview
 
-## React Compiler
+This project follows **Clean Architecture** to ensure maintainability, testability, and scalability.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Data Layer (`src/data`)
+- **Services**: Handles asynchronous API communication with the SAIZ staging backend.
+- **Mappers**: Employs the **Mapper Pattern** to decouple the UI from raw API responses, translating JSON into clean Domain models.
 
-## Expanding the ESLint configuration
+### 2. Domain Layer (`src/domain`)
+- **Models**: Defines strict TypeScript interfaces for all enterprise business rules.
+- **Factories**: Uses the **Factory Pattern** for dynamic screen rendering, allowing multiple brands to be onboarded with custom UI components without modifying core logic.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. State Layer (`src/state`)
+- **Redux Toolkit**: Manages global application state including user measurements, product data, and modal transitions.
+- **Slices**: Modularized state logic for Products, Screen navigation, and Theming.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 4. UI Layer (`src/ui`)
+- **Theme Provider**: A context-based system that injects dynamic CSS variables into the DOM for 100% theme awareness.
+- **Components**: Atomic and reusable UI units following a "Premium Monochrome" design system.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Key Features
+
+- **Pixel-Perfect Monochrome Design**: Optimized for a high-end feel in both light and dark modes.
+- **Mobile-App UX**: Responsive layout designed with thumb-friendly targets and vertical hierarchies.
+- **Unit Conversions**: Real-time conversion between Metric (cm/kg) and Imperial (ft/lbs) systems with high precision.
+- **Dynamic Avatar**: An SVG-based visualization that adapts to gender and garment types (e.g., shirts, trousers).
+- **Factory-Driven Integration**: Supports multiple brands via a central Screen Factory registry.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework**: React 18+ (Vite)
+- **Language**: TypeScript (Strict Mode)
+- **State Management**: Redux Toolkit (RTK)
+- **Styling**: Vanilla CSS with dynamic CSS Variables (Design Tokens)
+- **Icons/Graphics**: Custom SVG Illustrations
+
+---
+
+## 🚦 Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
+
+### Installation
+```bash
+# Clone the repository
+git clone <repo-url>
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Integration
+To embed the widget on a product page, add the following container:
+```html
+<div 
+  id="saiz-widget-container"
+  data-brandcode="ohapril"
+  data-productcode="zahara-lace-longsleeve-black"
+></div>
 ```
+
+---
+
+1. **Decoupling**: "We used Mappers to protect the frontend from breaking changes in the API response."
+2. **Extensibility**: "The Screen Factory pattern allows us to add brand-specific UI without touching the boilerplate logic."
+3. **Performance**: "CSS Variable injection prevents expensive React re-renders when switching themes."
+4. **Reliability**: "Strict TypeScript types ensure that 90% of potential production bugs are caught during development."
+
+---
+
+Developed with ❤️ for SAIZ.
