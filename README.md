@@ -82,5 +82,3 @@ To embed the widget on a product page, add the following container:
 4. **Reliability**: "Strict TypeScript types ensure that 90% of potential production bugs are caught during development."
 
 ---
-
-Developed with ❤️ for SAIZ.
