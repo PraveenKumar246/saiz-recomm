@@ -19,7 +19,7 @@ const RecommendationScreen: React.FC = () => {
   const { userMeasurements, selectedSize } = useAppSelector((s) => s.screen);
 
   if (!product) return null;
-  
+
   const sizes = product.measurements.map((m) => m.productSize);
 
   // ─── 1. Biometric Estimation ───────────────────────────────────
@@ -60,7 +60,7 @@ const RecommendationScreen: React.FC = () => {
   // ─── 4. Fit Label Analysis ────────────────────────────────────────
   const fitResults = useMemo(() => {
     if (!currentMeasurement) return [];
-    
+
     // Boundary check logic
     const getLabel = (val: number, min: number, max: number) => {
       if (val < min) return 'too loose';
@@ -75,13 +75,13 @@ const RecommendationScreen: React.FC = () => {
     }> = [];
 
     if (currentMeasurement.chestRange.display) {
-      results.push({ 
-        bodyPart: 'Chest', 
-        label: getLabel(estimatedChest, currentMeasurement.chestRange.min, currentMeasurement.chestRange.max), 
-        position: { top: '28%', right: '-8px' } 
+      results.push({
+        bodyPart: 'Chest',
+        label: getLabel(estimatedChest, currentMeasurement.chestRange.min, currentMeasurement.chestRange.max),
+        position: { top: '28%', right: '-8px' }
       });
     }
-    
+
     // Future-proofing for Waist/Hip if API enables them
     if (currentMeasurement.waistRange.display) {
       results.push({ bodyPart: 'Waist', label: 'fits right', position: { top: '45%', right: '-8px' } });

@@ -136,19 +136,19 @@ const InputScreen: React.FC = () => {
             </label>
             <div className="form-group__input-wrap">
               <input
-              id="height-input"
-              type="number"
-              className="form-group__input"
-              value={userMeasurements.height || ''}
-              onChange={(e) => dispatch(updateMeasurements({ height: Number(e.target.value) }))}
-              placeholder="0"
-              style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
-            />
+                id="height-input"
+                type="number"
+                className="form-group__input"
+                value={userMeasurements.height || ''}
+                onChange={(e) => dispatch(updateMeasurements({ height: Number(e.target.value) }))}
+                placeholder="0"
+                style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
+              />
               <button
                 id="height-unit-toggle"
                 className="form-group__unit-toggle"
                 onClick={() => dispatch(toggleHeightUnit())}
-                style={{ color: colors.textSecondary, borderColor: colors.border,  }}
+                style={{ color: colors.textSecondary, borderColor: colors.border, }}
               >
                 {userMeasurements.heightUnit === 'cm' ? 'cm' : 'in'}
               </button>
@@ -161,14 +161,14 @@ const InputScreen: React.FC = () => {
             </label>
             <div className="form-group__input-wrap">
               <input
-              id="weight-input"
-              type="number"
-              className="form-group__input"
-              value={userMeasurements.weight || ''}
-              onChange={(e) => dispatch(updateMeasurements({ weight: Number(e.target.value) }))}
-              placeholder="0"
-              style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
-            />
+                id="weight-input"
+                type="number"
+                className="form-group__input"
+                value={userMeasurements.weight || ''}
+                onChange={(e) => dispatch(updateMeasurements({ weight: Number(e.target.value) }))}
+                placeholder="0"
+                style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
+              />
               <button
                 id="weight-unit-toggle"
                 className="form-group__unit-toggle"
