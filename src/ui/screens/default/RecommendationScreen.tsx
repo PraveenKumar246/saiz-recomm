@@ -120,7 +120,7 @@ const RecommendationScreen: React.FC = () => {
           Back
         </button>
         <h2 className="screen__title" style={{ color: colors.text }}>
-          //SAIZ Recommendation
+          SAIZ Recommendation
         </h2>
       </div>
 
@@ -144,8 +144,8 @@ const RecommendationScreen: React.FC = () => {
               </span>
             </div>
             <div className="recommendation-hero__text">
-              <p style={{ color: colors.textSecondary }}>
-                We believe your expected size {recommendedSize.productSize} will fit you best.
+              <p style={{ color: colors.textSecondary, fontSize: '14px', lineHeight: '1.6' }}>
+                We believe your expected size <strong style={{ color: colors.text }}>{recommendedSize.productSize}</strong> will fit you best.
                 We recommend going for it!
               </p>
             </div>
@@ -162,9 +162,9 @@ const RecommendationScreen: React.FC = () => {
             <button
               id="shop-now-btn"
               className="btn btn--primary btn--shop"
-              style={{ background: colors.text, color: mode === 'dark' ? colors.background : '#FFFFFF' }}
+              style={{ background: colors.accent, color: colors.primary }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0110 0v4" />
               </svg>

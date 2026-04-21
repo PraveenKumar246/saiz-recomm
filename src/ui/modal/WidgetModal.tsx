@@ -54,8 +54,8 @@ const WidgetModal: React.FC = () => {
           style={{ borderBottomColor: colors.border }}
         >
           <div className="modal__brand">
-            <span className="modal__logo" style={{ color: colors.text }}>
-              //SAIZ
+            <span className="modal__logo" style={{ color: colors.text, fontWeight: 900 }}>
+              SAIZ
             </span>
           </div>
           <div className="modal__header-actions">

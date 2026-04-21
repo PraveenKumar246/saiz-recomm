@@ -26,10 +26,10 @@ const InputScreen: React.FC = () => {
       {/* Header Section */}
       <div className="screen__header">
         <h2 className="screen__title" style={{ color: colors.text }}>
-          Welcome to //SAIZ Recommender
+          SAIZ Recommendation
         </h2>
         <p className="screen__subtitle" style={{ color: colors.textSecondary }}>
-          Let's calculate the size that suits you best
+          Measure yourself for a perfect fit.
         </p>
       </div>
 
@@ -44,7 +44,7 @@ const InputScreen: React.FC = () => {
             <button
               className="screen__avatar-btn"
               id="change-avatar-btn"
-              style={{ color: colors.accent, borderColor: colors.border }}
+              style={{ color: colors.textSecondary, borderColor: colors.border }}
               onClick={() =>
                 dispatch(updateMeasurements({
                   gender: userMeasurements.gender === 'female' ? 'male' : (userMeasurements.gender === 'male' ? 'other' : 'female'),
@@ -73,7 +73,7 @@ const InputScreen: React.FC = () => {
                 className={`toggle-btn ${userMeasurements.gender === 'male' ? 'toggle-btn--active' : ''}`}
                 style={{
                   background: userMeasurements.gender === 'male' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'male' ? '#fff' : colors.text,
+                  color: userMeasurements.gender === 'male' ? colors.primary : colors.accent,
                   borderColor: colors.border,
                 }}
                 onClick={() => dispatch(updateMeasurements({ gender: 'male' }))}
@@ -85,7 +85,7 @@ const InputScreen: React.FC = () => {
                 className={`toggle-btn ${userMeasurements.gender === 'female' ? 'toggle-btn--active' : ''}`}
                 style={{
                   background: userMeasurements.gender === 'female' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'female' ? '#fff' : colors.text,
+                  color: userMeasurements.gender === 'female' ? colors.primary : colors.accent,
                   borderColor: colors.border,
                 }}
                 onClick={() => dispatch(updateMeasurements({ gender: 'female' }))}
@@ -97,7 +97,7 @@ const InputScreen: React.FC = () => {
                 className={`toggle-btn ${userMeasurements.gender === 'other' ? 'toggle-btn--active' : ''}`}
                 style={{
                   background: userMeasurements.gender === 'other' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'other' ? '#fff' : colors.text,
+                  color: userMeasurements.gender === 'other' ? colors.primary : colors.accent,
                   borderColor: colors.border,
                 }}
                 onClick={() => dispatch(updateMeasurements({ gender: 'other' }))}
@@ -136,22 +136,19 @@ const InputScreen: React.FC = () => {
             </label>
             <div className="form-group__input-wrap">
               <input
-                id="height-input"
-                type="number"
-                className="form-group__input"
-                value={userMeasurements.height}
-                onChange={(e) => dispatch(updateMeasurements({ height: parseFloat(e.target.value) || 0 }))}
-                style={{
-                  background: colors.surfaceAlt,
-                  color: colors.text,
-                  borderColor: colors.border,
-                }}
-              />
+              id="height-input"
+              type="number"
+              className="form-group__input"
+              value={userMeasurements.height || ''}
+              onChange={(e) => dispatch(updateMeasurements({ height: Number(e.target.value) }))}
+              placeholder="0"
+              style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
+            />
               <button
                 id="height-unit-toggle"
                 className="form-group__unit-toggle"
                 onClick={() => dispatch(toggleHeightUnit())}
-                style={{ color: colors.accent, borderColor: colors.border }}
+                style={{ color: colors.textSecondary, borderColor: colors.border,  }}
               >
                 {userMeasurements.heightUnit === 'cm' ? 'cm' : 'in'}
               </button>
@@ -164,22 +161,19 @@ const InputScreen: React.FC = () => {
             </label>
             <div className="form-group__input-wrap">
               <input
-                id="weight-input"
-                type="number"
-                className="form-group__input"
-                value={userMeasurements.weight}
-                onChange={(e) => dispatch(updateMeasurements({ weight: parseFloat(e.target.value) || 0 }))}
-                style={{
-                  background: colors.surfaceAlt,
-                  color: colors.text,
-                  borderColor: colors.border,
-                }}
-              />
+              id="weight-input"
+              type="number"
+              className="form-group__input"
+              value={userMeasurements.weight || ''}
+              onChange={(e) => dispatch(updateMeasurements({ weight: Number(e.target.value) }))}
+              placeholder="0"
+              style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
+            />
               <button
                 id="weight-unit-toggle"
                 className="form-group__unit-toggle"
                 onClick={() => dispatch(toggleWeightUnit())}
-                style={{ color: colors.accent, borderColor: colors.border }}
+                style={{ color: colors.textSecondary, borderColor: colors.border }}
               >
                 {userMeasurements.weightUnit === 'kg' ? 'kg' : 'lb'}
               </button>
@@ -190,7 +184,7 @@ const InputScreen: React.FC = () => {
             id="find-size-btn"
             className="btn btn--primary"
             onClick={handleFindSize}
-            style={{ background: colors.accent }}
+            style={{ background: colors.accent, color: colors.primary }}
           >
             Get your size recommendation
           </button>

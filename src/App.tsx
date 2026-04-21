@@ -29,7 +29,13 @@ const readWidgetConfig = (): WidgetConfig | null => {
     return null;
   }
 
-  return { brandCode, productCode, visitorId, language };
+  return { 
+    brandCode, 
+    productCode, 
+    visitorId, 
+    language,
+    metadata: allData 
+  };
 };
 
 // ─── Inner Widget (needs Redux context) ─────────────────────────────

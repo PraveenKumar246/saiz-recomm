@@ -4,6 +4,7 @@ export interface WidgetConfig {
   productCode: string;
   visitorId: string;
   language: string;
+  metadata?: Record<string, string | undefined>;
 }
 
 // ─── Measurement Range ──────────────────────────────────────────────

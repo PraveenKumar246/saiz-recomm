@@ -22,9 +22,9 @@ const ThemeSwitch: React.FC = () => {
       <span className="theme-switch__icon">
         {mode === 'dark' ? '☀️' : '🌙'}
       </span>
-      <span className="theme-switch__label">
+      {/* <span className="theme-switch__label">
         {mode === 'dark' ? 'Light' : 'Dark'}
-      </span>
+      </span> */}
     </button>
   );
 };

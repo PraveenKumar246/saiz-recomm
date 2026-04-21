@@ -8,7 +8,7 @@ interface ThemeState {
 }
 
 const initialState: ThemeState = {
-  mode: 'dark',
+  mode: 'light',
   brandCode: 'default',
 };
 

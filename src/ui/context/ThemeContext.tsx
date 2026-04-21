@@ -4,15 +4,15 @@ import { useAppSelector } from '../../state/store';
 
 // ─── Theme Definitions ─────────────────────────────────────────────
 const darkColors: ThemeColors = {
-  primary: '#1A1A2E',
-  secondary: '#16213E',
-  background: '#0F0F1A',
-  surface: '#1A1A2E',
-  surfaceAlt: '#222244',
+  primary: '#000000',
+  secondary: '#111111',
+  background: '#000000',
+  surface: '#111111',
+  surfaceAlt: '#1A1A1A',
   text: '#FFFFFF',
-  textSecondary: '#A0A0B8',
-  border: '#2A2A4A',
-  accent: '#6C63FF',
+  textSecondary: '#999999',
+  border: '#333333',
+  accent: '#FFFFFF',
   success: '#4CAF50',
   warning: '#FF9800',
   danger: '#E74C5F',
@@ -20,14 +20,14 @@ const darkColors: ThemeColors = {
 
 const lightColors: ThemeColors = {
   primary: '#FFFFFF',
-  secondary: '#F5F5FA',
-  background: '#FAFAFE',
+  secondary: '#F5F5F5',
+  background: '#FFFFFF',
   surface: '#FFFFFF',
-  surfaceAlt: '#F0F0F8',
-  text: '#1A1A2E',
-  textSecondary: '#6B6B80',
-  border: '#E0E0EE',
-  accent: '#6C63FF',
+  surfaceAlt: '#F9F9F9',
+  text: '#000000',
+  textSecondary: '#666666',
+  border: '#E5E5E5',
+  accent: '#000000',
   success: '#4CAF50',
   warning: '#FF9800',
   danger: '#E74C5F',
@@ -36,7 +36,7 @@ const lightColors: ThemeColors = {
 // Brand-specific overrides (extensible for future brands)
 const brandOverrides: Record<string, Partial<ThemeColors>> = {
   ohapril: {
-    accent: '#6C63FF',
+    // accent: '#000000',
   },
 };
 
@@ -59,6 +59,12 @@ export const ModelContextProvider: React.FC<ThemeProviderProps> = ({ children })
     const baseColors = mode === 'dark' ? { ...darkColors } : { ...lightColors };
     const overrides = brandOverrides[brandCode.toLowerCase()] || {};
     const colors = { ...baseColors, ...overrides };
+
+    // Inject CSS variables for global CSS access
+    const root = document.documentElement;
+    Object.entries(colors).forEach(([key, value]) => {
+      root.style.setProperty(`--saiz-${key}`, value);
+    });
 
     return { mode, colors, brandCode };
   }, [mode, brandCode]);
