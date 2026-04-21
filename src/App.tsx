@@ -99,7 +99,7 @@ const WidgetInner: React.FC = () => {
             </div>
             <div className="widget-trigger__text">
               <span className="widget-trigger__label">// SAIZ</span>
-              <span className="widget-trigger__sublabel">What's my size?</span>
+              <span className="widget-trigger__sublabel">Welcome to Size Recommender</span>
             </div>
             <svg className="widget-trigger__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 18l6-6-6-6" />

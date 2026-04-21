@@ -19,86 +19,76 @@ const RecommendationScreen: React.FC = () => {
   const { userMeasurements, selectedSize } = useAppSelector((s) => s.screen);
 
   if (!product) return null;
-
+  
   const sizes = product.measurements.map((m) => m.productSize);
 
-  // ─── Size Recommendation Logic ──────────────────────────────────
-  const recommendedSize = useMemo(() => {
-    // Simple estimation based on chest measurement from height/weight
-    const estimatedChest = (() => {
-      const { height, weight, gender, heightUnit, weightUnit } = userMeasurements;
-      const heightCm = heightUnit === 'ft' ? height * 30.48 : height;
-      const weightKg = weightUnit === 'lbs' ? weight / 2.205 : weight;
-      // Basic estimation formula
-      if (gender === 'female') {
-        return heightCm * 0.38 + weightKg * 0.35 + 20;
-      }
-      return heightCm * 0.42 + weightKg * 0.38 + 18;
-    })();
+  // ─── 1. Biometric Estimation ───────────────────────────────────
+  // We calculate this separately so it only re-runs if height/weight/gender changes
+  const estimatedChest = useMemo(() => {
+    const { height, weight, gender, heightUnit, weightUnit } = userMeasurements;
+    const heightCm = heightUnit === 'ft' ? height * 30.48 : height;
+    const weightKg = weightUnit === 'lbs' ? weight / 2.205 : weight;
 
-    let bestSize = product.measurements[0];
-    let bestDiff = Infinity;
-
-    for (const m of product.measurements) {
-      if (m.chestRange.display) {
-        const mid = (m.chestRange.min + m.chestRange.max) / 2;
-        const diff = Math.abs(estimatedChest - mid);
-        if (diff < bestDiff) {
-          bestDiff = diff;
-          bestSize = m;
-        }
-      }
+    if (gender === 'female') {
+      return heightCm * 0.38 + weightKg * 0.35 + 20;
     }
+    return heightCm * 0.42 + weightKg * 0.38 + 18;
+  }, [userMeasurements]);
 
-    return bestSize;
-  }, [product, userMeasurements]);
+  // ─── 2. Product Size Matching ─────────────────────────────────────
+  // Uses a functional .reduce() to find the size with the minimum distance
+  const recommendedSize = useMemo(() => {
+    return product.measurements.reduce((best, current) => {
+      if (!current.chestRange.display) return best;
 
-  // ─── Selected Measurement Details ─────────────────────────────────
+      const currentMid = (current.chestRange.min + current.chestRange.max) / 2;
+      const bestMid = (best.chestRange.min + best.chestRange.max) / 2;
+
+      const currentDiff = Math.abs(estimatedChest - currentMid);
+      const bestDiff = Math.abs(estimatedChest - bestMid);
+
+      return currentDiff < bestDiff ? current : best;
+    }, product.measurements[0]);
+  }, [product, estimatedChest]);
+
+  // ─── 3. Selected Measurement Details ──────────────────────────────
   const currentMeasurement: ProductMeasurement | undefined = useMemo(() => {
     const sizeToShow = selectedSize || recommendedSize.productSize;
     return product.measurements.find((m) => m.productSize === sizeToShow);
   }, [product, selectedSize, recommendedSize]);
 
-  // ─── Fit Calculation ──────────────────────────────────────────────
+  // ─── 4. Fit Label Analysis ────────────────────────────────────────
   const fitResults = useMemo(() => {
     if (!currentMeasurement) return [];
+    
+    // Boundary check logic
+    const getLabel = (val: number, min: number, max: number) => {
+      if (val < min) return 'too loose';
+      if (val > max) return 'too tight';
+      return 'fits right';
+    };
+
     const results: Array<{
       bodyPart: string;
       label: 'too tight' | 'fits right' | 'too loose';
       position: { top: string; right: string };
     }> = [];
 
-    // Estimated user chest
-    const { height, weight, gender, heightUnit, weightUnit } = userMeasurements;
-    const heightCm = heightUnit === 'ft' ? height * 30.48 : height;
-    const weightKg = weightUnit === 'lbs' ? weight / 2.205 : weight;
-    const estimatedChest = gender === 'female'
-      ? heightCm * 0.38 + weightKg * 0.35 + 20
-      : heightCm * 0.42 + weightKg * 0.38 + 18;
-
     if (currentMeasurement.chestRange.display) {
-      const { min, max } = currentMeasurement.chestRange;
-      let label: 'too tight' | 'fits right' | 'too loose';
-      if (estimatedChest < min) {
-        label = 'too loose';
-      } else if (estimatedChest > max) {
-        label = 'too tight';
-      } else {
-        label = 'fits right';
-      }
-      results.push({ bodyPart: 'Chest', label, position: { top: '28%', right: '-8px' } });
+      results.push({ 
+        bodyPart: 'Chest', 
+        label: getLabel(estimatedChest, currentMeasurement.chestRange.min, currentMeasurement.chestRange.max), 
+        position: { top: '28%', right: '-8px' } 
+      });
     }
-
+    
+    // Future-proofing for Waist/Hip if API enables them
     if (currentMeasurement.waistRange.display) {
       results.push({ bodyPart: 'Waist', label: 'fits right', position: { top: '45%', right: '-8px' } });
     }
 
-    if (currentMeasurement.hipRange.display) {
-      results.push({ bodyPart: 'Hip', label: 'fits right', position: { top: '55%', right: '-8px' } });
-    }
-
     return results;
-  }, [currentMeasurement, userMeasurements]);
+  }, [currentMeasurement, estimatedChest]);
 
   const handleBack = () => {
     dispatch(setScreen('input'));
