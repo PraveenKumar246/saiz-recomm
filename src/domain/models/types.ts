@@ -67,6 +67,7 @@ export interface Product {
   hasAttributes: boolean;
   hasNudges: boolean;
   showNudges: boolean;
+  nudges: any[];
   useDynamicFitModel: boolean;
   dynamicFitModel: DynamicFitModel;
 }

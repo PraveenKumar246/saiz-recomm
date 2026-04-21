@@ -153,9 +153,9 @@ const RecommendationScreen: React.FC = () => {
 
           <div className="screen__actions screen__actions--vertical">
             <button
-               id="learn-more-sizes-btn"
-               className="btn btn--outline"
-               style={{ color: colors.textSecondary, borderColor: colors.border }}
+              id="learn-more-sizes-btn"
+              className="btn btn--outline"
+              style={{ color: colors.textSecondary, borderColor: colors.border }}
             >
               Learn more about sizes
             </button>

@@ -36,6 +36,7 @@ export const ProductMapper = {
     hasAttributes: raw.hasAttributes,
     hasNudges: raw.hasNudges,
     showNudges: raw.showNudges,
+    nudges: Array.isArray(raw.nudges) ? raw.nudges : [],
     useDynamicFitModel: raw.useDynamicFitModel,
     dynamicFitModel: { ...raw.dynamicFitModel },
   }),

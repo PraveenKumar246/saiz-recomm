@@ -17,6 +17,7 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 18px;
+  --radius-xxl: 20px;
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 20px 80px rgba(0, 0, 0, 0.15);
@@ -156,18 +157,19 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--transition-normal);
+  transition: all var(--transition-normal);
 }
 
 .modal-overlay--visible {
   opacity: 1;
+  visibility: visible;
   pointer-events: all;
-  animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -180,7 +182,7 @@ body {
   width: 94vw;
   max-width: 720px;
   max-height: 90vh;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-xxl);
   border: 1px solid;
   overflow: hidden;
   display: flex;
@@ -590,7 +592,7 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 14px 28px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xxl);
   border: none;
   cursor: pointer;
   font-family: var(--font-family);
@@ -800,10 +802,54 @@ body {
   letter-spacing: -1px;
 }
 
+.recommendation-hero__main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.recommendation-hero__img-wrap {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.recommendation-hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .recommendation-hero__text {
   font-size: 13px;
   line-height: 1.5;
-  max-width: 240px;
+}
+
+.recommendation-nudge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 16px;
+  max-width: 320px;
+  line-height: 1.4;
+  text-align: center;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
 }
 
 /* ─── Flexible Action Stacks ─────────────────────────────────────────── */

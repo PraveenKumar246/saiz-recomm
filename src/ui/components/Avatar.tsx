@@ -48,18 +48,18 @@ const Avatar: React.FC<AvatarProps> = ({ gender, garmentType, fitResults = [] })
               <path d="M120 200 Q124 260 118 300 Q122 340 122 380 L142 380 Q142 340 144 300 Q140 250 135 200 Z" />
               {/* Garment overlay for shirt */}
               {garmentType.toLowerCase() === 'shirt' && (
-                <path 
+                <path
                   d="M70 80 Q60 100 58 140 Q56 170 62 195 L138 195 Q144 170 142 140 Q140 100 130 80 L120 82 Q115 90 100 90 Q85 90 80 82 Z"
-              fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
-              stroke={colors.accent}
-              strokeWidth="1.5"
-              strokeDasharray="4 2"
-            />
-          )}
-        </g>
-      ) : (
-        // Male or Other Silhouette
-        <g fill={mode === 'dark' ? '#333333' : '#DDDDDD'} stroke={mode === 'dark' ? '#444444' : '#CCCCCC'} strokeWidth="1">
+                  fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
+                  stroke={colors.accent}
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                />
+              )}
+            </g>
+          ) : (
+            // Male or Other Silhouette
+            <g fill={mode === 'dark' ? '#333333' : '#DDDDDD'} stroke={mode === 'dark' ? '#444444' : '#CCCCCC'} strokeWidth="1">
               <ellipse cx="100" cy="38" rx="24" ry="28" />
               <rect x="90" y="64" width="20" height="18" rx="4" />
               <path d="M65 82 Q55 105 52 145 Q50 185 60 205 L85 205 Q90 195 100 195 Q110 195 115 205 L140 205 Q150 185 148 145 Q145 105 135 82 Z" />
@@ -68,16 +68,16 @@ const Avatar: React.FC<AvatarProps> = ({ gender, garmentType, fitResults = [] })
               <path d="M60 205 Q55 260 52 310 Q50 350 52 385 L75 385 Q78 350 80 310 Q82 265 85 205 Z" />
               <path d="M115 205 Q118 265 120 310 Q122 350 125 385 L148 385 Q150 350 148 310 Q145 260 140 205 Z" />
               {garmentType.toLowerCase() === 'shirt' && (
-                <path 
+                <path
                   d="M65 82 Q55 105 52 145 Q50 175 57 200 L143 200 Q150 175 148 145 Q145 105 135 82 L125 85 Q118 95 100 95 Q82 95 75 85 Z"
-              fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
-              stroke={colors.accent}
-              strokeWidth="1.5"
-              strokeDasharray="4 2"
-            />
+                  fill={mode === 'dark' ? '#222222' : '#EEEEEE'}
+                  stroke={colors.accent}
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                />
+              )}
+            </g>
           )}
-        </g>
-      )}
         </svg>
 
         <img src={avatar} alt="Avatar" />

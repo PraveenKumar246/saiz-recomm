@@ -23,7 +23,7 @@ const WidgetModal: React.FC = () => {
     return ScreenFactory.getScreen(brandCode, currentScreen);
   }, [config?.brandCode, currentScreen]);
 
-  if (!modalOpen || !product) return null;
+  if (!product) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -119,14 +119,14 @@ const WidgetModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div
+        {/* <div
           className="modal__footer"
           style={{ borderTopColor: colors.border, color: colors.textSecondary }}
         >
           <span className="modal__footer-text">
             Powered by <strong style={{ color: colors.text }}>SAIZ</strong>
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
