@@ -1263,15 +1263,14 @@ body {
 /* CTA PILL BUTTON */
 .modal__cta--pill {
   width: 100%;
-  height: 56px;
-  border-radius: 40px;
+  height: 48px;
+  border-radius: 100px;
   background: #111;
   color: #fff;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: all var(--transition-fast);
 }
 
@@ -1356,50 +1355,65 @@ body {
   margin-bottom: 16px;
 }
 
-/* GENDER */
+/* ═══════════════════════════════
+   GENDER GROUP
+   ═══════════════════════════════ */
+
 .gender-group {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  /* flex-wrap: wrap; */
 }
 
+/* BUTTON */
 .gender-btn {
   flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 10px;
   height: 36px;
+
   border-radius: 8px;
+
   border: 1px solid #ECECEC;
+
   background: #fff;
+
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  width: fit-content;
+
   transition: var(--transition-fast);
+
+  will-change: transform;
 }
 
+/* ACTIVE STATE */
 .gender-btn.active {
   background: #000;
   color: #fff;
-  border: none;
+  border: 1px solid transparent;
 }
 
+/* CHECK CIRCLE */
 .gender-btn__check {
   width: 14px;
   height: 14px;
   border-radius: 50%;
   border: 1px solid #ECECEC;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: var(--transition-fast);
 }
 
+/* ACTIVE CHECK */
 .gender-btn__check.active {
   background: #fff;
-  border: none;
+  border: 1px solid transparent;
 }
 
 /* MEASUREMENT CARD */
@@ -1408,27 +1422,32 @@ body {
   border: 1.5px solid #F3F4F6;
   border-radius: 16px;
   padding: 16px 20px;
-  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  height: 58px;
 }
 
 .measurement-card__label {
-  font-size: 19px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--saiz-text);
   display: flex;
   align-items: baseline;
 }
 
+/* ONLY CHANGE THIS */
 .measurement-card__unit {
-  font-size: 11px;
-  color: #D1D5DB;
+  font-size: 10px;
+  font-weight: 500;
+  color: #B5B5BE;
+
   margin-left: 4px;
+
+  position: relative;
+  top: -6px; /* 👈 pushes it upward */
 }
 
 .measurement-card__picker {
-  width: 160px;
+  width: 200px;
 }

@@ -69,9 +69,10 @@ const NumericPicker: React.FC<NumericPickerProps> = ({ value, onChange, min = 10
                 minWidth: `${ITEM_WIDTH}px`, 
                 textAlign: 'center', 
                 scrollSnapAlign: 'center',
-                fontSize: isActive ? '20px' : '17px',
-                fontWeight: isActive ? '800' : '500',
-                color: isActive ? '#000000' : '#D1D5DB', // Black for active, light gray for others
+                fontSize: '20px',
+                fontWeight: isActive ? '700' : '400',
+                color: '#0F0F10',
+                opacity: isActive ? '1' : '.5',
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
