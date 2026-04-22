@@ -10,7 +10,7 @@ interface ScreenState {
 }
 
 const initialState: ScreenState = {
-  currentScreen: 'input',
+  currentScreen: 'welcome',
   modalOpen: false,
   selectedSize: null,
   userMeasurements: {
@@ -33,11 +33,11 @@ const screenSlice = createSlice({
     },
     openModal: (state) => {
       state.modalOpen = true;
-      state.currentScreen = 'input';
+        state.currentScreen = 'welcome';
     },
     closeModal: (state) => {
       state.modalOpen = false;
-      state.currentScreen = 'input';
+        state.currentScreen = 'welcome';
     },
     setSelectedSize: (state, action: PayloadAction<string>) => {
       state.selectedSize = action.payload;
@@ -47,8 +47,8 @@ const screenSlice = createSlice({
     },
     toggleHeightUnit: (state) => {
       if (state.userMeasurements.heightUnit === 'cm') {
-        state.userMeasurements.heightUnit = 'ft';
-        state.userMeasurements.height = Math.round(state.userMeasurements.height / 30.48 * 10) / 10;
+        state.userMeasurements.heightUnit = 'in';
+        state.userMeasurements.height = Math.round(state.userMeasurements.height / 2.54 * 10) / 10;
       } else {
         state.userMeasurements.heightUnit = 'cm';
         state.userMeasurements.height = Math.round(state.userMeasurements.height * 30.48);

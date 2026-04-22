@@ -78,7 +78,7 @@ export interface UserMeasurements {
   age: number;
   height: number;
   weight: number;
-  heightUnit: 'cm' | 'ft';
+  heightUnit: 'cm' | 'in';
   weightUnit: 'kg' | 'lbs';
 }
 
@@ -123,7 +123,14 @@ export interface Theme {
 }
 
 // ─── Screen Identifiers ────────────────────────────────────────────
-export type ScreenId = 'input' | 'recommendation';
+export type ScreenId =
+  | 'welcome'
+  | 'info'
+  | 'avatar'
+  | 'analyze'
+  | 'sizePreferences'
+  | 'input'
+  | 'recommendation';
 
 // ─── API Response (raw) ─────────────────────────────────────────────
 export interface ProductApiResponse {

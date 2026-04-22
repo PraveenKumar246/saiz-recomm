@@ -4,9 +4,9 @@ import { useAppSelector } from '../../state/store';
 
 // ─── Theme Definitions ─────────────────────────────────────────────
 const darkColors: ThemeColors = {
-  primary: '#000000',
+  primary: '#0F0F10',
   secondary: '#111111',
-  background: '#000000',
+  background: '#0F0F10',
   surface: '#111111',
   surfaceAlt: '#1A1A1A',
   text: '#FFFFFF',
@@ -24,10 +24,10 @@ const lightColors: ThemeColors = {
   background: '#FFFFFF',
   surface: '#FFFFFF',
   surfaceAlt: '#F9F9F9',
-  text: '#000000',
+  text: '#0F0F10',
   textSecondary: '#666666',
   border: '#E5E5E5',
-  accent: '#000000',
+  accent: '#0F0F10',
   success: '#4CAF50',
   warning: '#FF9800',
   danger: '#E74C5F',

@@ -1,205 +1,90 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
 import { useAppSelector, useAppDispatch } from '../../../state/store';
-import { setScreen, updateMeasurements, toggleHeightUnit, toggleWeightUnit } from '../../../state/slices/screenSlice';
-import Avatar from '../../components/Avatar';
+import { updateMeasurements } from '../../../state/slices/screenSlice';
+import NumericPicker from '../../components/NumericPicker';
 
-/**
- * InputScreen (Screen 1)
- * Collects user body measurements: gender, age, height, weight.
- * Based on the Figma design showing avatar with measurement inputs.
- */
 const InputScreen: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { colors } = useTheme();
   const { userMeasurements } = useAppSelector((s) => s.screen);
-  const product = useAppSelector((s) => s.product.product);
-
-  if (!product) return null;
-
-  const handleFindSize = () => {
-    dispatch(setScreen('recommendation'));
-  };
 
   return (
-    <div className="screen screen--input" id="input-screen">
-      {/* Header Section */}
-      <div className="screen__header">
-        <h2 className="screen__title" style={{ color: colors.text }}>
-          SAIZ Recommendation
-        </h2>
-        <p className="screen__subtitle" style={{ color: colors.textSecondary }}>
-          Measure yourself for a perfect fit.
-        </p>
-      </div>
-
-      <div className="screen__content">
-        {/* Left: Avatar Preview */}
-        <div className="screen__avatar-section">
-          <Avatar
-            gender={userMeasurements.gender}
-            garmentType={product.garmentType}
-          />
-          <div className="screen__avatar-actions">
-            <button
-              className="screen__avatar-btn"
-              id="change-avatar-btn"
-              style={{ color: colors.textSecondary, borderColor: colors.border }}
-              onClick={() =>
-                dispatch(updateMeasurements({
-                  gender: userMeasurements.gender === 'female' ? 'male' : (userMeasurements.gender === 'male' ? 'other' : 'female'),
-                }))
-              }
+    <div style={{ padding: '20px', backgroundColor: '#fff', minHeight: '100vh' }}>
+      {/* 1. Gender Card - Matches Screenshot 1 & 11 */}
+      <div style={{ 
+        border: '1px solid #F3F4F6', borderRadius: '16px', padding: '20px', marginBottom: '12px' 
+      }}>
+        <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '16px' }}>Gender</h3>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {['Male', 'Female', 'Other'].map((g) => (
+            <button 
+              key={g}
+              style={{
+                flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid #E5E7EB',
+                background: userMeasurements.gender === g.toLowerCase() ? '#000' : '#fff',
+                color: userMeasurements.gender === g.toLowerCase() ? '#fff' : '#000',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '600'
+              }}
+              onClick={() => dispatch(updateMeasurements({ gender: g.toLowerCase() }))}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              Change avatar
+              {g}
+              <div style={{ 
+                width: '18px', height: '18px', borderRadius: '50%', border: '1px solid #D1D5DB',
+                background: userMeasurements.gender === g.toLowerCase() ? '#fff' : 'transparent',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                {userMeasurements.gender === g.toLowerCase() && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#000' }} />}
+              </div>
             </button>
-          </div>
-        </div>
-
-        {/* Right: Measurement Form */}
-        <div className="screen__form-section">
-          {/* Gender Selection */}
-          <div className="form-group" id="gender-group">
-            <label className="form-group__label" style={{ color: colors.textSecondary }}>
-              Gender
-            </label>
-            <div className="form-group__toggle">
-              <button
-                id="gender-male-btn"
-                className={`toggle-btn ${userMeasurements.gender === 'male' ? 'toggle-btn--active' : ''}`}
-                style={{
-                  background: userMeasurements.gender === 'male' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'male' ? colors.primary : colors.accent,
-                  borderColor: colors.border,
-                }}
-                onClick={() => dispatch(updateMeasurements({ gender: 'male' }))}
-              >
-                Male
-              </button>
-              <button
-                id="gender-female-btn"
-                className={`toggle-btn ${userMeasurements.gender === 'female' ? 'toggle-btn--active' : ''}`}
-                style={{
-                  background: userMeasurements.gender === 'female' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'female' ? colors.primary : colors.accent,
-                  borderColor: colors.border,
-                }}
-                onClick={() => dispatch(updateMeasurements({ gender: 'female' }))}
-              >
-                Female
-              </button>
-              <button
-                id="gender-other-btn"
-                className={`toggle-btn ${userMeasurements.gender === 'other' ? 'toggle-btn--active' : ''}`}
-                style={{
-                  background: userMeasurements.gender === 'other' ? colors.accent : 'transparent',
-                  color: userMeasurements.gender === 'other' ? colors.primary : colors.accent,
-                  borderColor: colors.border,
-                }}
-                onClick={() => dispatch(updateMeasurements({ gender: 'other' }))}
-              >
-                Other
-              </button>
-            </div>
-          </div>
-          {/* ... (remaining fields) ... */}
-          <div className="form-group" id="age-group">
-            <label className="form-group__label" style={{ color: colors.textSecondary }}>
-              Age
-            </label>
-            <div className="form-group__input-wrap">
-              <input
-                id="age-input"
-                type="number"
-                className="form-group__input"
-                value={userMeasurements.age}
-                min={10}
-                max={100}
-                onChange={(e) => dispatch(updateMeasurements({ age: parseInt(e.target.value) || 0 }))}
-                style={{
-                  background: colors.surfaceAlt,
-                  color: colors.text,
-                  borderColor: colors.border,
-                }}
-              />
-              <span className="form-group__unit" style={{ color: colors.textSecondary }}>years</span>
-            </div>
-          </div>
-
-          <div className="form-group" id="height-group">
-            <label className="form-group__label" style={{ color: colors.textSecondary }}>
-              Height
-            </label>
-            <div className="form-group__input-wrap">
-              <input
-                id="height-input"
-                type="number"
-                className="form-group__input"
-                value={userMeasurements.height || ''}
-                onChange={(e) => dispatch(updateMeasurements({ height: Number(e.target.value) }))}
-                placeholder="0"
-                style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
-              />
-              <button
-                id="height-unit-toggle"
-                className="form-group__unit-toggle"
-                onClick={() => dispatch(toggleHeightUnit())}
-                style={{ color: colors.textSecondary, borderColor: colors.border, }}
-              >
-                {userMeasurements.heightUnit === 'cm' ? 'cm' : 'in'}
-              </button>
-            </div>
-          </div>
-
-          <div className="form-group" id="weight-group">
-            <label className="form-group__label" style={{ color: colors.textSecondary }}>
-              Weight
-            </label>
-            <div className="form-group__input-wrap">
-              <input
-                id="weight-input"
-                type="number"
-                className="form-group__input"
-                value={userMeasurements.weight || ''}
-                onChange={(e) => dispatch(updateMeasurements({ weight: Number(e.target.value) }))}
-                placeholder="0"
-                style={{ background: 'transparent', borderColor: colors.border, color: colors.text }}
-              />
-              <button
-                id="weight-unit-toggle"
-                className="form-group__unit-toggle"
-                onClick={() => dispatch(toggleWeightUnit())}
-                style={{ color: colors.textSecondary, borderColor: colors.border }}
-              >
-                {userMeasurements.weightUnit === 'kg' ? 'kg' : 'lb'}
-              </button>
-            </div>
-          </div>
-
-          <button
-            id="find-size-btn"
-            className="btn btn--primary"
-            onClick={handleFindSize}
-            style={{ background: colors.accent, color: colors.primary }}
-          >
-            Get your size recommendation
-          </button>
-
-          <button
-            id="learn-more-btn"
-            className="btn btn--outline"
-            style={{ color: colors.textSecondary, borderColor: colors.border }}
-          >
-            Learn more about sizing
-          </button>
+          ))}
         </div>
       </div>
+
+      {/* 2. Measurement Rows - Fixed to match the INLINE style of Screenshot 11 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <MeasurementRow 
+          label="Age" 
+          value={userMeasurements.age} 
+          onChange={(v) => dispatch(updateMeasurements({ age: v }))} 
+        />
+        <MeasurementRow 
+          label="Weight" 
+          unit="kg" 
+          value={userMeasurements.weight} 
+          onChange={(v) => dispatch(updateMeasurements({ weight: v }))} 
+        />
+        <MeasurementRow 
+          label="Height" 
+          unit="cm" 
+          value={userMeasurements.height} 
+          onChange={(v) => dispatch(updateMeasurements({ height: v }))} 
+        />
+      </div>
+
+      <button style={{ 
+        marginTop: '32px', width: '100%', background: '#000', color: '#fff', 
+        height: '56px', borderRadius: '100px', fontWeight: '700', border: 'none', fontSize: '16px' 
+      }}>
+        Get your size recommendation
+      </button>
     </div>
   );
 };
 
-export default InputScreen;
+export default InputScreen
+
+const MeasurementRow = ({ label, unit, value, onChange }: any) => (
+  <div style={{ 
+    border: '1px solid #F3F4F6', borderRadius: '16px', padding: '24px 20px',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between' // THIS LOCKS THE LAYOUT
+  }}>
+    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+      <span style={{ fontSize: '20px', fontWeight: '700', color: '#000' }}>{label}</span>
+      {unit && <span style={{ fontSize: '12px', color: '#9CA3AF', marginLeft: '4px' }}>{unit}</span>}
+    </div>
+    
+    {/* The Picker takes the right side of the row */}
+    <div style={{ width: '180px' }}> 
+      <NumericPicker value={value} onChange={onChange} />
+    </div>
+  </div>
+);

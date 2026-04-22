@@ -1,10 +1,8 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import avatar from '../../assets/avatar.svg';
 
 interface AvatarProps {
   gender: 'male' | 'female' | 'other';
-  garmentType: string;
   displayConfig?: {
     chest: boolean;
     waist: boolean;
@@ -20,7 +18,6 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ 
   gender, 
-  garmentType, 
   displayConfig = { chest: true, waist: true, hip: true, length: false },
   fitResults = [] 
 }) => {
