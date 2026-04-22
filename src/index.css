@@ -331,21 +331,22 @@ body {
 /* Card style used in Figma */
 .form-card {
   background: var(--saiz-surface, #fff);
-  border: 1px solid var(--saiz-border, #eee);
+  border: 1px solid var(--saiz-border, #ECECEC);
   border-radius: 12px;
   padding: 14px;
 }
 
 .badge {
   display: inline-flex;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: var(--saiz-text);
   color: #fff;
   border-radius: 50%;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 /* Info cards */
@@ -359,6 +360,7 @@ body {
   display: flex;
   gap: 12px;
   align-items: flex-start;
+  min-height: 160px;
 }
 
 .info-card__index {
@@ -368,6 +370,7 @@ body {
 .info-card__body {
   flex: 1;
   font-size: 14px;
+  font-weight: 500;
   color: var(--saiz-text);
 }
 
