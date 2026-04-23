@@ -1,6 +1,6 @@
 import React, { Suspense, useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '../../state/store';
-import { closeModal, setScreen } from '../../state/slices/screenSlice';
+import { closeModal, setScreen, nextRecommendationStep } from '../../state/slices/screenSlice';
 import { ScreenFactory } from '../../domain/factories/ScreenFactory';
 import { useTheme } from '../context/ThemeContext';
 import ThemeSwitch from '../components/ThemeSwitch';
@@ -12,7 +12,7 @@ import ShoppingBagIcon from '../../assets/shop_now.svg';
 
 const WidgetModal: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { modalOpen, currentScreen } = useAppSelector((s) => s.screen);
+  const { modalOpen, currentScreen, recommendationStep } = useAppSelector((s) => s.screen);
   const config = useAppSelector((s) => s.product.config);
   const { colors, mode } = useTheme();
 
@@ -41,16 +41,28 @@ const WidgetModal: React.FC = () => {
 
   const handleCTA = () => {
     if (currentScreen === 'recommendation') {
-      dispatch(closeModal());
+      if (recommendationStep === 'measurements') {
+        dispatch(nextRecommendationStep());
+      } else {
+        dispatch(closeModal());
+      }
     } else {
       dispatch(setScreen('recommendation'));
+      dispatch(nextRecommendationStep());
     }
   };
 
   const getCTAText = () => {
-    return currentScreen === 'recommendation' ?
-      <><img alt="" src={ShoppingBagIcon} style={{ ...iconFilterStyle, marginRight: '10px' }} /> Shop now</> : 'Get your size recommendation';
+    if (currentScreen === 'recommendation') {
+      return recommendationStep === 'measurements'
+        ? 'See recommended size'
+        : <> <img alt="" src={ShoppingBagIcon} style={{ ...iconFilterStyle, marginRight: '10px' }} /> Shop now</>;
+    }
+
+    return 'Get your size recommendation';
   };
+
+  // const shouldShowFooter = currentScreen !== 'recommendation' || recommendationStep === 'measurements';
 
   return (
     <div
@@ -130,7 +142,27 @@ const WidgetModal: React.FC = () => {
         </div>
 
         {/* FOOTER */}
+        {/* {shouldShowFooter && ( */}
         <div className="modal__footer-sticky modal__footer--widget">
+          {currentScreen === 'recommendation' && recommendationStep === 'recommendation' && (
+            <button
+              type="button"
+              onClick={() => dispatch(setScreen('info'))}
+              style={{
+                width: '100%',
+                minHeight: '48px',
+                borderRadius: '999px',
+                border: `1px solid ${colors?.text}`,
+                background: 'transparent',
+                color: colors.text,
+                fontSize: '16px',
+                fontWeight: 400,
+                cursor: 'pointer',
+              }}
+            >
+              Learn more about sizes
+            </button>
+          )}
           <button
             className="modal__cta modal__cta--pill"
             onClick={handleCTA}
@@ -139,6 +171,7 @@ const WidgetModal: React.FC = () => {
             {getCTAText()}
           </button>
         </div>
+        {/* )} */}
       </div>
     </div>
   );
