@@ -2,8 +2,8 @@ import React, { Suspense, useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '../../state/store';
 import { closeModal, setScreen } from '../../state/slices/screenSlice';
 import { ScreenFactory } from '../../domain/factories/ScreenFactory';
-import InfoSrc from '../../assets/bi_info.svg';
 import SaizLogo from '../../assets/saiz_logo.svg';
+import InfoSrc from '../../assets/bi_info.svg';
 import LeftArrow from '../../assets/left_arrow.svg';
 import CloseIcon from '../../assets/close_icon.svg';
 
@@ -24,20 +24,24 @@ const WidgetModal: React.FC = () => {
   };
 
   const getProgress = () => {
-    if (currentScreen === 'welcome') return 33;
-    if (currentScreen === 'avatar') return 66;
-    if (currentScreen === 'recommendation') return 100;
-    return 50;
+    const progressMap: Record<string, number> = {
+      welcome: 20,
+      info: 50,
+      recommendation: 100,
+    };
+    return progressMap[currentScreen] ?? 0;
   };
 
   const handleCTA = () => {
-    if (currentScreen === 'welcome') {
-      dispatch(setScreen('avatar'));
-    } else if (currentScreen === 'avatar') {
-      dispatch(setScreen('recommendation'));
-    } else {
+    if (currentScreen === 'recommendation') {
       dispatch(closeModal());
+    } else {
+      dispatch(setScreen('recommendation'));
     }
+  };
+
+  const getCTAText = () => {
+    return currentScreen === 'recommendation' ? 'Shop now' : 'Get your size recommendation';
   };
 
   return (
@@ -51,18 +55,21 @@ const WidgetModal: React.FC = () => {
         <div className="modal__header modal__header--widget">
           <div className="modal__header-top">
 
-            {/* Left Icon */}
-            <div
-              className="modal__icon-btn"
-              onClick={() =>
-                dispatch(setScreen(currentScreen === 'welcome' ? 'info' : 'welcome'))
-              }
-            >
-              <img
-                src={currentScreen === 'welcome' ? InfoSrc : LeftArrow}
-                alt="nav"
-              />
-            </div>
+            {currentScreen === 'welcome' ? (
+              <div
+                className="modal__icon-btn"
+                onClick={() => dispatch(setScreen('info'))}
+              >
+                <img src={InfoSrc} alt="Info" />
+              </div>
+            ) : (
+              <div
+                className="modal__icon-btn"
+                onClick={() => dispatch(setScreen('welcome'))}
+              >
+                <img src={LeftArrow} alt="Back" />
+              </div>
+            )}
 
             {/* Logo */}
             <img src={SaizLogo} alt="SAIZ" className="modal__logo-img" />
@@ -75,7 +82,6 @@ const WidgetModal: React.FC = () => {
               <img src={CloseIcon} alt="Close" />
             </div>
           </div>
-
           {/* Progress */}
           <div className="modal__progress">
             <div
@@ -95,9 +101,7 @@ const WidgetModal: React.FC = () => {
         {/* FOOTER */}
         <div className="modal__footer-sticky modal__footer--widget">
           <button className="modal__cta modal__cta--pill" onClick={handleCTA}>
-            {currentScreen === 'recommendation'
-              ? 'Shop now'
-              : 'Get your size recommendation'}
+            {getCTAText()}
           </button>
         </div>
       </div>

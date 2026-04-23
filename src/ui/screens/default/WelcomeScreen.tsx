@@ -1,12 +1,10 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
 import { useAppSelector, useAppDispatch } from '../../../state/store';
 import { updateMeasurements, toggleHeightUnit } from '../../../state/slices/screenSlice';
 import NumericPicker from '../../components/NumericPicker';
 
 const WelcomeScreen: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { colors } = useTheme();
   const { userMeasurements } = useAppSelector((s) => s.screen);
 
   return (
@@ -46,7 +44,7 @@ const WelcomeScreen: React.FC = () => {
 
           <div className="gender-group">
             {['Male', 'Female', 'Other'].map((label) => {
-              const val = label.toLowerCase();
+              const val = label.toLowerCase() as 'male' | 'female' | 'other';
               const active = userMeasurements.gender === val;
 
               return (

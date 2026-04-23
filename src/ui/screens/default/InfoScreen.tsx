@@ -1,11 +1,8 @@
 import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAppDispatch } from '../../../state/store';
-import { setScreen } from '../../../state/slices/screenSlice';
 
 const InfoScreen: React.FC = () => {
   const { colors } = useTheme();
-  const dispatch = useAppDispatch();
 
   return (
     <div className="screen screen--info" id="info-screen">

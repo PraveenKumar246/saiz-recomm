@@ -20,6 +20,18 @@ const initialState: ScreenState = {
     weight: 60,
     heightUnit: 'cm',
     weightUnit: 'kg',
+    // Step 2 - Measurements
+    chest: 80,
+    waist: 65,
+    hips: 90,
+    measurementUnit: 'cm',
+    // Step 2 - Size Preferences
+    clothingSize: 'M',
+    clothingSizeStandard: 'EU',
+    pantsWaist: 29,
+    pantsLength: 32,
+    cupSize: 'C',
+    braBand: 85,
   },
 };
 

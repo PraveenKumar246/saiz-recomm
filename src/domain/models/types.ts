@@ -80,6 +80,18 @@ export interface UserMeasurements {
   weight: number;
   heightUnit: 'cm' | 'in';
   weightUnit: 'kg' | 'lbs';
+  // Step 2 - Measurements
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  measurementUnit?: 'cm' | 'in';
+  // Step 2 - Size Preferences
+  clothingSize?: string;
+  clothingSizeStandard?: 'EU' | 'US';
+  pantsWaist?: number;
+  pantsLength?: number;
+  cupSize?: string;
+  braBand?: number;
 }
 
 // ─── Size Recommendation ────────────────────────────────────────────
@@ -126,10 +138,6 @@ export interface Theme {
 export type ScreenId =
   | 'welcome'
   | 'info'
-  | 'avatar'
-  | 'analyze'
-  | 'sizePreferences'
-  | 'input'
   | 'recommendation';
 
 // ─── API Response (raw) ─────────────────────────────────────────────
