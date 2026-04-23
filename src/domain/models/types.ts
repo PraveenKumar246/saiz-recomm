@@ -78,8 +78,20 @@ export interface UserMeasurements {
   age: number;
   height: number;
   weight: number;
-  heightUnit: 'cm' | 'ft';
+  heightUnit: 'cm' | 'in';
   weightUnit: 'kg' | 'lbs';
+  // Step 2 - Measurements
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  measurementUnit?: 'cm' | 'in';
+  // Step 2 - Size Preferences
+  clothingSize?: string;
+  clothingSizeStandard?: 'EU' | 'US';
+  pantsWaist?: number;
+  pantsLength?: number;
+  cupSize?: string;
+  braBand?: number;
 }
 
 // ─── Size Recommendation ────────────────────────────────────────────
@@ -123,7 +135,10 @@ export interface Theme {
 }
 
 // ─── Screen Identifiers ────────────────────────────────────────────
-export type ScreenId = 'input' | 'recommendation';
+export type ScreenId =
+  | 'welcome'
+  | 'info'
+  | 'recommendation';
 
 // ─── API Response (raw) ─────────────────────────────────────────────
 export interface ProductApiResponse {

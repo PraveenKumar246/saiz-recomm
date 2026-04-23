@@ -1,29 +1,28 @@
 import React, { Suspense, useMemo } from 'react';
-import { useTheme } from '../context/ThemeContext';
 import { useAppSelector, useAppDispatch } from '../../state/store';
-import { closeModal } from '../../state/slices/screenSlice';
+import { closeModal, setScreen } from '../../state/slices/screenSlice';
 import { ScreenFactory } from '../../domain/factories/ScreenFactory';
+import { useTheme } from '../context/ThemeContext';
 import ThemeSwitch from '../components/ThemeSwitch';
+import SaizLogo from '../../assets/saiz_logo.svg';
+import InfoSrc from '../../assets/bi_info.svg';
+import LeftArrow from '../../assets/left_arrow.svg';
+import CloseIcon from '../../assets/close_icon.svg';
+import ShoppingBagIcon from '../../assets/shop_now.svg';
 
-/**
- * WidgetModal
- * The main modal container that holds the two screens.
- * Uses the ScreenFactory to resolve brand-specific screens.
- */
 const WidgetModal: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { colors } = useTheme();
   const { modalOpen, currentScreen } = useAppSelector((s) => s.screen);
-  const product = useAppSelector((s) => s.product.product);
   const config = useAppSelector((s) => s.product.config);
+  const { colors, mode } = useTheme();
 
-  // Get brand-specific screen component from the factory
+  // This filter inverts black icons to white for dark mode
+  const iconFilterStyle = mode === 'dark' ? { filter: 'invert(1)' } : {};
+
   const ScreenComponent = useMemo(() => {
     const brandCode = config?.brandCode || 'default';
     return ScreenFactory.getScreen(brandCode, currentScreen);
   }, [config?.brandCode, currentScreen]);
-
-  if (!product) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -31,102 +30,115 @@ const WidgetModal: React.FC = () => {
     }
   };
 
+  const getProgress = () => {
+    const progressMap: Record<string, number> = {
+      welcome: 33,
+      info: 66,
+      recommendation: 100,
+    };
+    return progressMap[currentScreen] ?? 0;
+  };
+
+  const handleCTA = () => {
+    if (currentScreen === 'recommendation') {
+      dispatch(closeModal());
+    } else {
+      dispatch(setScreen('recommendation'));
+    }
+  };
+
+  const getCTAText = () => {
+    return currentScreen === 'recommendation' ?
+      <><img alt="" src={ShoppingBagIcon} style={{ ...iconFilterStyle, marginRight: '10px' }} /> Shop now</> : 'Get your size recommendation';
+  };
+
   return (
     <div
       className={`modal-overlay ${modalOpen ? 'modal-overlay--visible' : ''}`}
-      id="widget-modal-overlay"
       onClick={handleOverlayClick}
     >
       <div
-        className="modal"
-        id="widget-modal"
-        style={{
-          background: colors.surface,
-          borderColor: colors.border,
-        }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="SAIZ Size Recommendation"
+        className="modal modal--widget"
+        style={{ background: colors.surface, color: colors.text }}
       >
-        {/* Modal Header */}
-        <div
-          className="modal__header"
-          style={{ borderBottomColor: colors.border }}
-        >
-          <div className="modal__brand">
-            <span className="modal__logo" style={{ color: colors.text, fontWeight: 900 }}>
-              SAIZ
-            </span>
+        {/* HEADER */}
+        <div className="modal__header modal__header--widget" style={{ borderColor: colors.border }}>
+          <div className="modal__header-top">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {currentScreen === 'welcome' ? (
+                <div
+                  className="modal__icon-btn"
+                  onClick={() => dispatch(setScreen('info'))}
+                >
+                  <img
+                    src={InfoSrc}
+                    alt="Info"
+                    style={iconFilterStyle}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="modal__icon-btn"
+                  onClick={() => dispatch(setScreen('welcome'))}
+                >
+                  <img
+                    src={LeftArrow}
+                    alt="Back"
+                    style={iconFilterStyle}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Logo */}
+            <img
+              src={SaizLogo}
+              alt="SAIZ"
+              className="modal__logo-img"
+              style={iconFilterStyle}
+            />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <ThemeSwitch />
+              <div
+                className="modal__icon-btn"
+                onClick={() => dispatch(closeModal())}
+              >
+                <img
+                  src={CloseIcon}
+                  alt="Close"
+                  style={iconFilterStyle}
+                />
+              </div>
+            </div>
           </div>
-          <div className="modal__header-actions">
-            <ThemeSwitch />
-            <button
-              id="modal-close-btn"
-              className="modal__close"
-              onClick={() => dispatch(closeModal())}
-              aria-label="Close modal"
-              style={{ color: colors.textSecondary }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+
+          {/* Progress Bar Container */}
+          <div className="modal__progress" style={{ background: colors.border }}>
+            <div
+              className="modal__progress-bar"
+              style={{ width: `${getProgress()}%`, background: colors.text }}
+            />
           </div>
         </div>
 
-        {/* Modal Body */}
-        <div className="modal__body">
-          {/* Screen Progress Indicator */}
-          <div className="modal__progress">
-            <div
-              className={`modal__progress-step ${currentScreen === 'input' ? 'modal__progress-step--active' : 'modal__progress-step--done'}`}
-              style={{
-                background: currentScreen === 'input' ? colors.accent : colors.success,
-              }}
-            />
-            <div
-              className="modal__progress-line"
-              style={{ background: colors.border }}
-            >
-              <div
-                className="modal__progress-line-fill"
-                style={{
-                  background: colors.accent,
-                  width: currentScreen === 'recommendation' ? '100%' : '0%',
-                }}
-              />
-            </div>
-            <div
-              className={`modal__progress-step ${currentScreen === 'recommendation' ? 'modal__progress-step--active' : ''}`}
-              style={{
-                background: currentScreen === 'recommendation' ? colors.accent : colors.border,
-              }}
-            />
-          </div>
-
-          {/* Render Active Screen */}
-          <Suspense
-            fallback={
-              <div className="modal__loading" style={{ color: colors.textSecondary }}>
-                <div className="spinner" />
-                Loading...
-              </div>
-            }
-          >
+        {/* BODY */}
+        <div className="modal__body modal__body--no-padding">
+          <Suspense fallback={<div className="spinner" />}>
             <ScreenComponent />
           </Suspense>
         </div>
 
-        {/* Modal Footer */}
-        {/* <div
-          className="modal__footer"
-          style={{ borderTopColor: colors.border, color: colors.textSecondary }}
-        >
-          <span className="modal__footer-text">
-            Powered by <strong style={{ color: colors.text }}>SAIZ</strong>
-          </span>
-        </div> */}
+        {/* FOOTER */}
+        <div className="modal__footer-sticky modal__footer--widget">
+          <button
+            className="modal__cta modal__cta--pill"
+            onClick={handleCTA}
+            style={{ background: colors.text, color: colors.surface }}
+          >
+            {getCTAText()}
+          </button>
+        </div>
       </div>
     </div>
   );

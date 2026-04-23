@@ -2,11 +2,10 @@ import React from 'react';
 
 interface FitIndicatorProps {
   label: 'too tight' | 'fits right' | 'too loose';
-  bodyPart?: string;
   style?: React.CSSProperties;
 }
 
-const FitIndicator: React.FC<FitIndicatorProps> = ({ label, bodyPart, style }) => {
+const FitIndicator: React.FC<FitIndicatorProps> = ({ label, style }) => {
 
   const getIndicatorColor = () => {
     switch (label) {

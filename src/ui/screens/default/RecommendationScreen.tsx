@@ -1,182 +1,161 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAppSelector, useAppDispatch } from '../../../state/store';
-import { setScreen, setSelectedSize } from '../../../state/slices/screenSlice';
-import Avatar from '../../components/Avatar';
-import SizeSelector from '../../components/SizeSelector';
-import FitIndicator from '../../components/FitIndicator';
-import type { ProductMeasurement } from '../../../domain/models/types';
+import AvatarImg from '../../../assets/avatar.svg';
 
-/**
- * RecommendationScreen (Screen 2)
- * Shows size recommendation results with avatar fit visualization.
- * Based on the Figma "Step 5 - Detailed view" design.
- */
 const RecommendationScreen: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { colors, mode } = useTheme();
-  const product = useAppSelector((s) => s.product.product);
-  const { userMeasurements, selectedSize } = useAppSelector((s) => s.screen);
-
-  if (!product) return null;
-
-  const sizes = product.measurements.map((m) => m.productSize);
-
-  // ─── 1. Biometric Estimation ───────────────────────────────────
-  // We calculate this separately so it only re-runs if height/weight/gender changes
-  const estimatedChest = useMemo(() => {
-    const { height, weight, gender, heightUnit, weightUnit } = userMeasurements;
-    const heightCm = heightUnit === 'ft' ? height * 30.48 : height;
-    const weightKg = weightUnit === 'lbs' ? weight / 2.205 : weight;
-
-    if (gender === 'female') {
-      return heightCm * 0.38 + weightKg * 0.35 + 20;
-    }
-    return heightCm * 0.42 + weightKg * 0.38 + 18;
-  }, [userMeasurements]);
-
-  // ─── 2. Product Size Matching ─────────────────────────────────────
-  // Uses a functional .reduce() to find the size with the minimum distance
-  const recommendedSize = useMemo(() => {
-    return product.measurements.reduce((best, current) => {
-      if (!current.chestRange.display) return best;
-
-      const currentMid = (current.chestRange.min + current.chestRange.max) / 2;
-      const bestMid = (best.chestRange.min + best.chestRange.max) / 2;
-
-      const currentDiff = Math.abs(estimatedChest - currentMid);
-      const bestDiff = Math.abs(estimatedChest - bestMid);
-
-      return currentDiff < bestDiff ? current : best;
-    }, product.measurements[0]);
-  }, [product, estimatedChest]);
-
-  // ─── 3. Selected Measurement Details ──────────────────────────────
-  const currentMeasurement: ProductMeasurement | undefined = useMemo(() => {
-    const sizeToShow = selectedSize || recommendedSize.productSize;
-    return product.measurements.find((m) => m.productSize === sizeToShow);
-  }, [product, selectedSize, recommendedSize]);
-
-  // ─── 4. Fit Label Analysis ────────────────────────────────────────
-  const fitResults = useMemo(() => {
-    if (!currentMeasurement) return [];
-
-    // Boundary check logic
-    const getLabel = (val: number, min: number, max: number) => {
-      if (val < min) return 'too loose';
-      if (val > max) return 'too tight';
-      return 'fits right';
-    };
-
-    const results: Array<{
-      bodyPart: string;
-      label: 'too tight' | 'fits right' | 'too loose';
-      position: { top: string; right: string };
-    }> = [];
-
-    if (currentMeasurement.chestRange.display) {
-      results.push({
-        bodyPart: 'Chest',
-        label: getLabel(estimatedChest, currentMeasurement.chestRange.min, currentMeasurement.chestRange.max),
-        position: { top: '28%', right: '-8px' }
-      });
-    }
-
-    // Future-proofing for Waist/Hip if API enables them
-    if (currentMeasurement.waistRange.display) {
-      results.push({ bodyPart: 'Waist', label: 'fits right', position: { top: '45%', right: '-8px' } });
-    }
-
-    return results;
-  }, [currentMeasurement, estimatedChest]);
-
-  const handleBack = () => {
-    dispatch(setScreen('input'));
-  };
+  const { colors } = useTheme();
+  const sizes = ['S', 'M', 'L', 'XL', '2X'];
+  const recommendedSize = 'L';
 
   return (
-    <div className="screen screen--recommendation" id="recommendation-screen">
-      {/* Header */}
-      <div className="screen__header">
-        <button
-          id="back-btn"
-          className="screen__back-btn"
-          onClick={handleBack}
-          style={{ color: colors.textSecondary }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          Back
-        </button>
-        <h2 className="screen__title" style={{ color: colors.text }}>
-          SAIZ Recommendation
-        </h2>
+    <div style={{
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      backgroundColor: colors.surface,
+      color: colors.text,
+      minHeight: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '16px'
+    }}>
+
+      {/* Recommended Size Bar */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '10px 16px',
+        marginBottom: '12px',
+        borderRadius: '18px',
+        backgroundColor: colors.surfaceAlt,
+        border: `1px solid ${colors.border}`
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: colors.text }}>{'Recommended size'}</span>
+          <div style={{
+            backgroundColor: colors.text,
+            color: colors.surface,
+            borderRadius: '50%',
+            width: '28px',
+            height: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>{recommendedSize}</div>
+        </div>
+        <div style={{ border: `1px solid ${colors.border}`, padding: '6px 8px', borderRadius: '8px', fontSize: '12px', color: colors.textSecondary, backgroundColor: colors.surface }}>
+          ⊞
+        </div>
       </div>
 
-      <div className="screen__content">
-        {/* Left: Avatar with Fit Overlay */}
-        <div className="screen__avatar-section">
-          <Avatar
-            gender={userMeasurements.gender}
-            garmentType={product.garmentType}
-            displayConfig={product.display}
-            fitResults={fitResults}
+      {/* Size Selector */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        padding: '22px 0',
+        border: `1px solid ${colors.border}`,
+        borderRadius: '18px',
+        marginBottom: '24px',
+        backgroundColor: colors.surfaceAlt
+      }}>
+        {sizes.map(size => (
+          <span key={size} style={{
+            fontSize: size === recommendedSize ? '22px' : '20px',
+            fontWeight: size === recommendedSize ? '700' : '500',
+            color: size === recommendedSize ? colors.text : colors.textSecondary,
+          }}>{size}</span>
+        ))}
+      </div>
+
+      {/* Avatar Content Area */}
+      <div style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center' }}>
+        
+        {/* Measurement Callouts (Left) */}
+        <div style={{ position: 'absolute', left: '0', top: '20%', display: 'flex', flexDirection: 'column', gap: '80px', zIndex: 2 }}>
+           <MeasurementBox label="Your chest" val="90-94cm" productVal="90-94 cm" />
+           <MeasurementBox label="Your hips" val="90-94cm" productVal="90-94 cm" />
+        </div>
+
+        {/* Avatar Image Placeholder */}
+        <div style={{ width: '300px', height: '316px' }}>
+          <img 
+            src={AvatarImg}
+            alt="Avatar" 
+            style={{ width: '100%', height: 'auto' }} 
           />
         </div>
 
-        {/* Right: Recommendation Details */}
-        <div className="screen__details-section">
-          {/* Big Size Box */}
-          <div className="recommendation-hero">
-            <div className="recommendation-hero__box">
-              <span className="recommendation-hero__size">
-                {recommendedSize.productSize}
-              </span>
-            </div>
-            <div className="recommendation-hero__text">
-              <p style={{ color: colors.textSecondary, fontSize: '14px', lineHeight: '1.6' }}>
-                We believe your expected size <strong style={{ color: colors.text }}>{recommendedSize.productSize}</strong> will fit you best.
-                We recommend going for it!
-              </p>
-            </div>
-          </div>
+        {/* Fit Indicators (Right/Center) */}
+        <div style={{ position: 'absolute', left: '50%', transform: 'translateX(20px)', top: '28%', display: 'flex', flexDirection: 'column', gap: '45px' }}>
+          <FitBadge label="too tight" color="#E67E66" />
+          <FitBadge label="fits right" color="#7BC67E" />
+          <FitBadge label="fits right" color="#7BC67E" />
+        </div>
 
-          <div className="screen__actions screen__actions--vertical">
-            <button
-              id="learn-more-sizes-btn"
-              className="btn btn--outline"
-              style={{ color: colors.textSecondary, borderColor: colors.border }}
-            >
-              Learn more about sizes
-            </button>
-            <button
-              id="shop-now-btn"
-              className="btn btn--primary btn--shop"
-              style={{ background: colors.accent, color: colors.primary }}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0110 0v4" />
-              </svg>
-              Shop now
-            </button>
-          </div>
-
-          {/* Size Selector (Lower Priority) */}
-          <div className="screen__size-section screen__size-section--compact">
-            <label className="form-group__label" style={{ color: colors.textSecondary }}>
-              Other available sizes
-            </label>
-            <SizeSelector
-              sizes={sizes}
-              selectedSize={selectedSize || recommendedSize.productSize}
-              recommendedSize={recommendedSize.productSize}
-              onSelect={(size) => dispatch(setSelectedSize(size))}
-            />
-          </div>
+        {/* Measurement Callouts (Right) */}
+        <div style={{ position: 'absolute', right: '0', top: '35%' }}>
+           <MeasurementBox label="Your waist" val="90-94cm" productVal="90-94 cm" />
         </div>
       </div>
+
+      {/* Run Scale */}
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <div style={{ 
+          height: '2px', 
+          background: `linear-gradient(to right, ${colors.text} 40%, ${colors.border} 40%)`, 
+          width: '60%', 
+          margin: '0 auto 8px',
+          borderRadius: '2px'
+        }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 600 }}>
+          <span style={{ color: colors.textSecondary }}>runs smaller</span>
+          <span style={{ color: colors.textSecondary }}>{'runs larger'}</span>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+// Helper Components
+const MeasurementBox = ({ label, val, productVal }: any) => {
+  const { colors } = useTheme();
+
+  return (
+    <div style={{ 
+      background: colors.surfaceAlt,
+      padding: '8px', 
+      borderRadius: '8px', 
+      boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+      fontSize: '10px',
+      border: `1px solid ${colors.border}`
+    }}>
+      <div style={{ color: colors.textSecondary }}>{label} <strong style={{ color: colors.text }}>{val}</strong></div>
+      <div style={{ marginTop: '4px' }}>
+        <span style={{ background: colors.surface, padding: '2px 4px', borderRadius: '4px', fontWeight: 'bold', color: colors.text }}>Product</span>
+      </div>
+      <div style={{ fontWeight: 'bold', fontSize: '11px', marginTop: '2px', color: colors.text }}>L &nbsp; {productVal}</div>
+    </div>
+  );
+};
+
+const FitBadge = ({ label, color }: any) => {
+  const { colors } = useTheme();
+
+  return (
+    <div style={{
+      backgroundColor: color,
+      color: colors.surface,
+      padding: '4px 12px',
+      borderRadius: '12px',
+      fontSize: '11px',
+      fontWeight: 'bold',
+      whiteSpace: 'nowrap',
+      boxShadow: `0 2px 5px ${colors.border}`
+    }}>
+      {label}
     </div>
   );
 };
