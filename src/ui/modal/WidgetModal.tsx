@@ -55,7 +55,7 @@ const WidgetModal: React.FC = () => {
   const getCTAText = () => {
     if (currentScreen === 'recommendation') {
       return recommendationStep === 'measurements'
-        ? 'See recommended size'
+        ? 'Next'
         : <> <img alt="" src={ShoppingBagIcon} style={{ ...iconFilterStyle, marginRight: '10px' }} /> Shop now</>;
     }
 
