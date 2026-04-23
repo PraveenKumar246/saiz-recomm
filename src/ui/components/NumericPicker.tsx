@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
 
 interface NumericPickerProps {
   value: number;
@@ -9,6 +10,7 @@ interface NumericPickerProps {
 
 const NumericPicker: React.FC<NumericPickerProps> = ({ value, onChange, min = 10, max = 200 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { colors } = useTheme();
   const ITEM_WIDTH = 45; // Adjust this to match the spacing in Figma
   const items = Array.from({ length: max - min + 1 }, (_, i) => min + i);
 
@@ -71,7 +73,7 @@ const NumericPicker: React.FC<NumericPickerProps> = ({ value, onChange, min = 10
                 scrollSnapAlign: 'center',
                 fontSize: '20px',
                 fontWeight: isActive ? '700' : '400',
-                color: '#0F0F10',
+                color: isActive ? colors.text : colors.textSecondary,
                 opacity: isActive ? '1' : '.5',
                 transition: 'all 0.15s ease',
                 display: 'flex',

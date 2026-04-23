@@ -1,203 +1,161 @@
 import React from 'react';
-import AvatarIcon from '../../../assets/avatar.svg';
+import { useTheme } from '../../context/ThemeContext';
+import AvatarImg from '../../../assets/avatar.svg';
 
 const RecommendationScreen: React.FC = () => {
-  return (
-    <div className="screen screen--recommendation" style={{ padding: '28px 24px 16px' }}>
-      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-        <h2 style={{ margin: 0, fontSize: '22px', fontWeight: 700, letterSpacing: '-0.8px' }}>
-          //SAIZ Recommendation
-        </h2>
-      </div>
+  const { colors } = useTheme();
+  const sizes = ['S', 'M', 'L', 'XL', '2X'];
+  const recommendedSize = 'L';
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-        <div style={{
-          width: '100%',
-          maxWidth: '320px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '18px',
-          padding: '22px 18px',
-          borderRadius: '26px',
-          background: '#FFFFFF',
-          boxShadow: '0 16px 45px rgba(0, 0, 0, 0.08)'
-        }}>
+  return (
+    <div style={{
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      backgroundColor: colors.surface,
+      color: colors.text,
+      minHeight: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '16px'
+    }}>
+
+      {/* Recommended Size Bar */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '10px 16px',
+        marginBottom: '12px',
+        borderRadius: '18px',
+        backgroundColor: colors.surfaceAlt,
+        border: `1px solid ${colors.border}`
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: colors.text }}>{'Recommended size'}</span>
           <div style={{
-            width: '96px',
-            height: '96px',
+            backgroundColor: colors.text,
+            color: colors.surface,
+            borderRadius: '50%',
+            width: '28px',
+            height: '28px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: '22px',
-            border: '1px solid #E7E7E7',
-            background: '#FAFAFA',
-            color: '#111111',
-            fontSize: '42px',
-            fontWeight: 900,
-            boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
-          }}>
-            L
-          </div>
-
-          <div style={{
-            textAlign: 'center',
-            color: '#3A3A3A',
-            fontSize: '15px',
-            fontWeight: 500,
-            lineHeight: 1.6,
-            maxWidth: '280px'
-          }}>
-            We believe your expected size M will be too small. We recommend going a size up.
-          </div>
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>{recommendedSize}</div>
         </div>
-
-        <div style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '18px',
-          alignItems: 'flex-start'
-        }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '12px 16px',
-              borderRadius: '20px',
-              border: '1px solid #F1F1F1',
-              background: '#FFFFFF',
-              color: '#111111',
-              fontWeight: 600,
-              cursor: 'default'
-            }}>
-              <span style={{
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '50%',
-                background: '#F8F8F8',
-                color: '#111111',
-                fontSize: '16px'
-              }}>👤</span>
-              <span style={{ textAlign: 'left', fontSize: '13px' }}>Change avatar</span>
-            </button>
-
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '12px 16px',
-              borderRadius: '20px',
-              border: '1px solid #F1F1F1',
-              background: '#FFFFFF',
-              color: '#111111',
-              fontWeight: 600,
-              cursor: 'default'
-            }}>
-              <span style={{
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '50%',
-                background: '#F8F8F8',
-                color: '#111111',
-                fontSize: '16px'
-              }}>📏</span>
-              <span style={{ textAlign: 'left', fontSize: '13px' }}>Enter your measurements</span>
-            </button>
-          </div>
-
-          <div style={{
-            flex: 1,
-            maxWidth: '320px',
-            position: 'relative',
-            borderRadius: '32px',
-            overflow: 'hidden',
-            background: '#FFFFFF',
-            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.12)',
-            padding: '32px 24px 20px'
-          }}>
-            <img
-              src={AvatarIcon}
-              alt="Avatar"
-              style={{ width: '100%', height: 'auto', display: 'block', margin: '0 auto' }}
-            />
-
-            <div style={{
-              position: 'absolute',
-              top: '32%',
-              right: '12%',
-              transform: 'translateY(-50%)',
-              padding: '8px 14px',
-              borderRadius: '999px',
-              background: '#F08A6A',
-              color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 700,
-              boxShadow: '0 8px 20px rgba(240, 138, 106, 0.22)'
-            }}>
-              too tight
-            </div>
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              right: '12%',
-              padding: '8px 14px',
-              borderRadius: '999px',
-              background: '#6ACF9A',
-              color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 700,
-              boxShadow: '0 8px 20px rgba(106, 207, 154, 0.22)'
-            }}>
-              fits right
-            </div>
-            <div style={{
-              position: 'absolute',
-              top: '65%',
-              right: '12%',
-              padding: '8px 14px',
-              borderRadius: '999px',
-              background: '#6ACF9A',
-              color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 700,
-              boxShadow: '0 8px 20px rgba(106, 207, 154, 0.22)'
-            }}>
-              fits right
-            </div>
-          </div>
-        </div>
-
-        <div style={{
-          width: '100%',
-          maxWidth: '420px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '18px 24px 0',
-          marginTop: '6px',
-          borderTop: '1px solid #ECECEC',
-          color: '#7C7C7C',
-          fontSize: '12px',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.4px'
-        }}>
-          <span>← runs smaller</span>
-          <span>runs larger →</span>
+        <div style={{ border: `1px solid ${colors.border}`, padding: '6px 8px', borderRadius: '8px', fontSize: '12px', color: colors.textSecondary, backgroundColor: colors.surface }}>
+          ⊞
         </div>
       </div>
+
+      {/* Size Selector */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        padding: '22px 0',
+        border: `1px solid ${colors.border}`,
+        borderRadius: '18px',
+        marginBottom: '24px',
+        backgroundColor: colors.surfaceAlt
+      }}>
+        {sizes.map(size => (
+          <span key={size} style={{
+            fontSize: size === recommendedSize ? '22px' : '20px',
+            fontWeight: size === recommendedSize ? '700' : '500',
+            color: size === recommendedSize ? colors.text : colors.textSecondary,
+          }}>{size}</span>
+        ))}
+      </div>
+
+      {/* Avatar Content Area */}
+      <div style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center' }}>
+        
+        {/* Measurement Callouts (Left) */}
+        <div style={{ position: 'absolute', left: '0', top: '20%', display: 'flex', flexDirection: 'column', gap: '80px', zIndex: 2 }}>
+           <MeasurementBox label="Your chest" val="90-94cm" productVal="90-94 cm" />
+           <MeasurementBox label="Your hips" val="90-94cm" productVal="90-94 cm" />
+        </div>
+
+        {/* Avatar Image Placeholder */}
+        <div style={{ width: '300px', height: '316px' }}>
+          <img 
+            src={AvatarImg}
+            alt="Avatar" 
+            style={{ width: '100%', height: 'auto' }} 
+          />
+        </div>
+
+        {/* Fit Indicators (Right/Center) */}
+        <div style={{ position: 'absolute', left: '50%', transform: 'translateX(20px)', top: '28%', display: 'flex', flexDirection: 'column', gap: '45px' }}>
+          <FitBadge label="too tight" color="#E67E66" />
+          <FitBadge label="fits right" color="#7BC67E" />
+          <FitBadge label="fits right" color="#7BC67E" />
+        </div>
+
+        {/* Measurement Callouts (Right) */}
+        <div style={{ position: 'absolute', right: '0', top: '35%' }}>
+           <MeasurementBox label="Your waist" val="90-94cm" productVal="90-94 cm" />
+        </div>
+      </div>
+
+      {/* Run Scale */}
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <div style={{ 
+          height: '2px', 
+          background: `linear-gradient(to right, ${colors.text} 40%, ${colors.border} 40%)`, 
+          width: '60%', 
+          margin: '0 auto 8px',
+          borderRadius: '2px'
+        }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 600 }}>
+          <span style={{ color: colors.textSecondary }}>runs smaller</span>
+          <span style={{ color: colors.textSecondary }}>{'runs larger'}</span>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+// Helper Components
+const MeasurementBox = ({ label, val, productVal }: any) => {
+  const { colors } = useTheme();
+
+  return (
+    <div style={{ 
+      background: colors.surfaceAlt,
+      padding: '8px', 
+      borderRadius: '8px', 
+      boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+      fontSize: '10px',
+      border: `1px solid ${colors.border}`
+    }}>
+      <div style={{ color: colors.textSecondary }}>{label} <strong style={{ color: colors.text }}>{val}</strong></div>
+      <div style={{ marginTop: '4px' }}>
+        <span style={{ background: colors.surface, padding: '2px 4px', borderRadius: '4px', fontWeight: 'bold', color: colors.text }}>Product</span>
+      </div>
+      <div style={{ fontWeight: 'bold', fontSize: '11px', marginTop: '2px', color: colors.text }}>L &nbsp; {productVal}</div>
+    </div>
+  );
+};
+
+const FitBadge = ({ label, color }: any) => {
+  const { colors } = useTheme();
+
+  return (
+    <div style={{
+      backgroundColor: color,
+      color: colors.surface,
+      padding: '4px 12px',
+      borderRadius: '12px',
+      fontSize: '11px',
+      fontWeight: 'bold',
+      whiteSpace: 'nowrap',
+      boxShadow: `0 2px 5px ${colors.border}`
+    }}>
+      {label}
     </div>
   );
 };

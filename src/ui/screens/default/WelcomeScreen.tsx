@@ -1,9 +1,11 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../../state/store';
+import { useTheme } from '../../context/ThemeContext';
 import { updateMeasurements, toggleHeightUnit } from '../../../state/slices/screenSlice';
 import NumericPicker from '../../components/NumericPicker';
 
 const WelcomeScreen: React.FC = () => {
+  const { colors } = useTheme();
   const dispatch = useAppDispatch();
   const { userMeasurements } = useAppSelector((s) => s.screen);
 
@@ -58,7 +60,7 @@ const WelcomeScreen: React.FC = () => {
                   <div className={`gender-btn__check ${active ? 'active' : ''}`}>
                     {active && (
                       <svg width="10" height="8" viewBox="0 0 12 10">
-                        <path d="M2 5L4.5 7.5L10 2" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M2 5L4.5 7.5L10 2" stroke={colors.text} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     )}
                   </div>
