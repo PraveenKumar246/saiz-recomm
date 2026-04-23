@@ -4,6 +4,7 @@ import type { ScreenId, UserMeasurements } from '../../domain/models/types';
 // ─── State Shape ────────────────────────────────────────────────────
 interface ScreenState {
   currentScreen: ScreenId;
+  recommendationStep: 'measurements' | 'recommendation';
   modalOpen: boolean;
   selectedSize: string | null;
   userMeasurements: UserMeasurements;
@@ -11,6 +12,7 @@ interface ScreenState {
 
 const initialState: ScreenState = {
   currentScreen: 'welcome',
+  recommendationStep: 'measurements',
   modalOpen: false,
   selectedSize: null,
   userMeasurements: {
@@ -42,6 +44,9 @@ const screenSlice = createSlice({
   reducers: {
     setScreen: (state, action: PayloadAction<ScreenId>) => {
       state.currentScreen = action.payload;
+      if (action.payload === 'recommendation') {
+        state.recommendationStep = 'measurements';
+      }
     },
     openModal: (state) => {
       state.modalOpen = true;
@@ -53,6 +58,11 @@ const screenSlice = createSlice({
     },
     setSelectedSize: (state, action: PayloadAction<string>) => {
       state.selectedSize = action.payload;
+    },
+    nextRecommendationStep: (state) => {
+      if (state.recommendationStep === 'measurements') {
+        state.recommendationStep = 'recommendation';
+      }
     },
     updateMeasurements: (state, action: PayloadAction<Partial<UserMeasurements>>) => {
       state.userMeasurements = { ...state.userMeasurements, ...action.payload };
@@ -75,6 +85,31 @@ const screenSlice = createSlice({
         state.userMeasurements.weight = Math.round(state.userMeasurements.weight / 2.205);
       }
     },
+    toggleMeasurementUnit: (state) => {
+      if (state.userMeasurements.measurementUnit === 'cm') {
+        state.userMeasurements.measurementUnit = 'in';
+        state.userMeasurements.chest = state.userMeasurements.chest
+          ? Math.round(state.userMeasurements.chest / 2.54)
+          : undefined;
+        state.userMeasurements.waist = state.userMeasurements.waist
+          ? Math.round(state.userMeasurements.waist / 2.54)
+          : undefined;
+        state.userMeasurements.hips = state.userMeasurements.hips
+          ? Math.round(state.userMeasurements.hips / 2.54)
+          : undefined;
+      } else {
+        state.userMeasurements.measurementUnit = 'cm';
+        state.userMeasurements.chest = state.userMeasurements.chest
+          ? Math.round(state.userMeasurements.chest * 2.54)
+          : undefined;
+        state.userMeasurements.waist = state.userMeasurements.waist
+          ? Math.round(state.userMeasurements.waist * 2.54)
+          : undefined;
+        state.userMeasurements.hips = state.userMeasurements.hips
+          ? Math.round(state.userMeasurements.hips * 2.54)
+          : undefined;
+      }
+    },
   },
 });
 
@@ -83,9 +118,11 @@ export const {
   openModal,
   closeModal,
   setSelectedSize,
+  nextRecommendationStep,
   updateMeasurements,
   toggleHeightUnit,
   toggleWeightUnit,
+  toggleMeasurementUnit,
 } = screenSlice.actions;
 
 export default screenSlice.reducer;
