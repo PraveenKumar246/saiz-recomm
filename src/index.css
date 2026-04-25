@@ -274,7 +274,7 @@ body {
 .modal {
   position: relative;
   width: 375px;
-  height: 95%;
+  /* height: 95%; */
   border-radius: 20px;
   border: 1px solid var(--saiz-border);
   overflow: hidden;
